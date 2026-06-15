@@ -1,11 +1,7 @@
 import SwiftUI
 
 struct PasteBoardView: View {
-  @State private var appState = AppState.shared
   @State private var pasteBoardPopup = AppState.shared.pasteBoardPopup
-  @State private var scenePhase: ScenePhase = .background
-
-  var pasteBoard: PasteBoard
 
   var body: some View {
     ZStack {
@@ -21,19 +17,12 @@ struct PasteBoardView: View {
         content
       }
     }
-    .environment(appState)
     .environment(pasteBoardPopup)
-    .environment(\.scenePhase, scenePhase)
-    .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) {
-      updateScenePhase(for: $0, to: .active)
-    }
-    .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)) {
-      updateScenePhase(for: $0, to: .background)
-    }
+    .frame(minHeight: PasteBoardPopup.minimumHeight, maxHeight: PasteBoardPopup.maximumHeight)
   }
 
   private var header: some View {
-    HStack(spacing: 8) {
+    HStack(alignment: .top, spacing: 8) {
       Text(NSLocalizedString(
         "paste_board_title",
         tableName: "Localizable",
@@ -45,53 +34,45 @@ struct PasteBoardView: View {
 
       Spacer()
 
-      Text("\(pasteBoard.items.count)")
+      Text("\(pasteBoardPopup.queue.count)")
         .font(.caption)
         .foregroundStyle(.secondary)
         .monospacedDigit()
     }
     .padding(.leading, 44)
     .padding(.trailing, 12)
-    .frame(height: 38)
+    .frame(height: PasteBoardPopup.fixedHeaderHeight)
   }
 
   @ViewBuilder
   private var content: some View {
-    if pasteBoard.items.isEmpty {
-      Text("paste_board_empty", tableName: "Localizable")
+    if pasteBoardPopup.queue.isEmpty {
+      Text(NSLocalizedString(
+        "paste_board_empty",
+        tableName: "Localizable",
+        value: "Empty",
+        comment: ""
+      ))
         .foregroundStyle(.secondary)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     } else {
       ScrollView {
         LazyVStack(spacing: 0) {
-          ForEach(Array(pasteBoard.items.enumerated()), id: \.element.id) { index, item in
+          ForEach(Array(pasteBoardPopup.queue.enumerated()), id: \.element.id) { index, item in
             PasteBoardItemView(item: item, index: index)
-            if index != pasteBoard.items.count - 1 {
+            if index != pasteBoardPopup.queue.count - 1 {
               Divider()
                 .padding(.leading, 10)
             }
           }
         }
-        .padding(.vertical, 5)
+        .readHeight(pasteBoardPopup, into: \.contentHeight)
+      }
+      .frame(maxHeight: PasteBoardPopup.maximumHeight - PasteBoardPopup.fixedHeaderHeight)
+      .onChange(of: pasteBoardPopup.contentHeight) {
+        pasteBoardPopup.resizeForContentHeight()
       }
     }
-  }
-
-  private var windowIdentifier: NSUserInterfaceItemIdentifier? {
-    guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return nil }
-
-    return NSUserInterfaceItemIdentifier("\(bundleIdentifier).PasteBoard")
-  }
-
-  private func updateScenePhase(for notification: Notification, to newPhase: ScenePhase) {
-    guard let window = notification.object as? NSWindow,
-          let windowIdentifier,
-          window.identifier == windowIdentifier
-    else {
-      return
-    }
-
-    scenePhase = newPhase
   }
 }
 
@@ -108,12 +89,12 @@ private struct PasteBoardItemView: View {
   }
 
   var body: some View {
-    HStack(spacing: 8) {
+    HStack(alignment: .top, spacing: 8) {
       Text("\(index + 1)")
         .font(.caption)
         .foregroundStyle(.secondary)
         .monospacedDigit()
-        .frame(width: 18, alignment: .trailing)
+        .frame(width: 18, alignment: .topTrailing)
 
       if let thumbnailImage = item.thumbnailImage {
         Image(nsImage: thumbnailImage)
@@ -124,13 +105,15 @@ private struct PasteBoardItemView: View {
       }
 
       Text(verbatim: title)
-        .lineLimit(1)
+        .lineLimit(1...3)
         .truncationMode(.tail)
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity, alignment: .leading)
 
       Spacer(minLength: 0)
     }
-    .frame(height: 28)
-    .padding(.horizontal, 10)
+    .padding(.horizontal, PasteBoardPopup.rowHorizontalPadding)
+    .padding(.vertical, PasteBoardPopup.rowVerticalPadding)
     .onAppear {
       item.ensureThumbnailImage()
     }
@@ -138,6 +121,6 @@ private struct PasteBoardItemView: View {
 }
 
 #Preview {
-  PasteBoardView(pasteBoard: PasteBoard.shared)
+  PasteBoardView()
     .environment(\.locale, .init(identifier: "en"))
 }

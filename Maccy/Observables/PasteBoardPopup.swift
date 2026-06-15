@@ -6,45 +6,25 @@
 //  Copyright © 2026 p0deje. All rights reserved.
 //
 
-import AppKit.NSRunningApplication
+import AppKit
 import Defaults
 import KeyboardShortcuts
 import Observation
 
-
-
 @Observable
 class PasteBoardPopup {
-  static let verticalSeparatorPadding = 6.0
-  static let horizontalSeparatorPadding = 6.0
-  static let verticalPadding: CGFloat = 5
-  static let horizontalPadding: CGFloat = 5
-  static let minimumPreviewHeight: CGFloat = 150
+  static let minimumHeight: CGFloat = 150
+  static let maximumHeight: CGFloat = 500
+  static let fixedHeaderHeight: CGFloat = 38
+  static let separatorHeight: CGFloat = 1
+  static let rowHorizontalPadding: CGFloat = 10
+  static let rowVerticalPadding: CGFloat = 8
 
-  // Radius used for items inset by the padding. Ensures they visually have the same curvature
-  // as the menu.
-  static let cornerRadius: CGFloat = if #available(macOS 26.0, *) {
-    7
-  } else {
-    4
-  }
-
-  static let itemHeight: CGFloat = if #available(macOS 26.0, *) {
-    24
-  } else {
-    22
-  }
-
-  var needsResize = false
-  var height: CGFloat = 0
-  var headerHeight: CGFloat = 0
-  var extraTopHeight: CGFloat = 0
-  var extraBottomHeight: CGFloat = 0
-  var footerHeight: CGFloat = 0
+  var queue: [HistoryItemDecorator] = []
+  var contentHeight: CGFloat = 0
 
   private var eventsMonitor: Any?
-
-  private var state: PopupState = .toggle
+  private var isOpening = false
 
   init() {
     KeyboardShortcuts.onKeyDown(for: .pasteBoard, action: handleFirstKeyDown)
@@ -55,16 +35,16 @@ class PasteBoardPopup {
     deinitEventsMonitor()
   }
 
-  func initEventsMonitor() {
+  private func initEventsMonitor() {
     guard eventsMonitor == nil else { return }
 
-    self.eventsMonitor = NSEvent.addLocalMonitorForEvents(
+    eventsMonitor = NSEvent.addLocalMonitorForEvents(
       matching: [.flagsChanged, .keyDown],
       handler: handleEvent
     )
   }
 
-  func deinitEventsMonitor() {
+  private func deinitEventsMonitor() {
     guard let eventsMonitor else { return }
 
     NSEvent.removeMonitor(eventsMonitor)
@@ -72,57 +52,106 @@ class PasteBoardPopup {
 
   func open(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
     MainActor.assumeIsolated {
+      resetQueue()
       PasteBoard.shared.start()
     }
     AppState.shared.appDelegate?.pasteBoardPanel.open(height: height, at: popupPosition)
+    MainActor.assumeIsolated {
+      resizeForContentHeight()
+    }
   }
 
   func reset() {
     MainActor.assumeIsolated {
       PasteBoard.shared.stop()
+      resetQueue()
     }
-    state = .toggle
+    isOpening = false
     KeyboardShortcuts.enable(.pasteBoard)
   }
 
   func close() {
-    AppState.shared.appDelegate?.pasteBoardPanel.close()  // close() calls reset
+    AppState.shared.appDelegate?.pasteBoardPanel.close() // close() calls reset
   }
 
   func isClosed() -> Bool {
     AppState.shared.appDelegate?.pasteBoardPanel.isPresented != true
   }
 
-  func preferredHeight(for newHeight: CGFloat) -> CGFloat {
-    var height = newHeight
-
-    var minimumHeight = 0.0
-    // If the preview is non-empty make sure the window accomodates for it to be visible.
-    if AppState.shared.preview.state.isOpen && AppState.shared.navigator.leadSelection != nil {
-      minimumHeight += Self.minimumPreviewHeight
-    }
-    minimumHeight = max(headerHeight + Self.verticalPadding, minimumHeight)
-
-    height = max(height, minimumHeight)
-    height = min(height, Defaults[.windowSize].height)
-    return height
-  }
-
-  func resize(height: CGFloat) {
-    self.height = height + headerHeight + extraTopHeight + extraBottomHeight + footerHeight
-    AppState.shared.appDelegate?.pasteBoardPanel.verticallyResize(to: preferredHeight(for: self.height))
-    needsResize = false
-  }
-
   private func handleFirstKeyDown() {
     if isClosed() {
-      open(height: height)
-      state = .opening
+      open(height: Self.minimumHeight)
+      isOpening = true
       return
     }
 
     // Maccy was not opened via shortcut. We assume toggle mode and close it
     close()
+  }
+
+  @MainActor
+  private func resetQueue() {
+    queue.removeAll()
+    contentHeight = 0
+  }
+
+  @MainActor
+  func addCopiedItem(_ item: HistoryItem) {
+    addCopiedItem(HistoryItemDecorator(snapshot(item)))
+  }
+
+  @MainActor
+  private func addCopiedItem(_ item: HistoryItemDecorator) {
+    guard PasteBoard.shared.isRunning,
+          !hasQueuedEquivalent(item)
+    else {
+      return
+    }
+
+    queue.append(item)
+  }
+
+  private func snapshot(_ item: HistoryItem) -> HistoryItem {
+    let copiedContents = item.contents.map {
+      HistoryItemContent(type: $0.type, value: $0.value)
+    }
+    let copiedItem = HistoryItem(contents: copiedContents)
+    copiedItem.application = item.application
+    copiedItem.firstCopiedAt = item.firstCopiedAt
+    copiedItem.lastCopiedAt = item.lastCopiedAt
+    copiedItem.numberOfCopies = item.numberOfCopies
+    copiedItem.title = item.title
+    return copiedItem
+  }
+
+  @MainActor
+  func removeQueuedItem(_ item: HistoryItemDecorator) {
+    if let index = queue.firstIndex(of: item) {
+      queue.remove(at: index)
+    }
+
+    if queue.isEmpty {
+      contentHeight = 0
+    }
+
+    resizeForContentHeight()
+  }
+
+  private func hasQueuedEquivalent(_ item: HistoryItemDecorator) -> Bool {
+    return queue.contains {
+      $0.item == item.item ||
+        $0.item.supersedes(item.item) ||
+        item.item.supersedes($0.item)
+    }
+  }
+
+  @MainActor
+  func resizeForContentHeight() {
+    let targetHeight = min(
+      Self.maximumHeight,
+      max(Self.minimumHeight, Self.fixedHeaderHeight + Self.separatorHeight + contentHeight)
+    )
+    AppState.shared.appDelegate?.pasteBoardPanel.verticallyResize(to: targetHeight)
   }
 
   private func handleEvent(_ event: NSEvent) -> NSEvent? {
@@ -137,48 +166,21 @@ class PasteBoardPopup {
   }
 
   private func handleKeyDown(_ event: NSEvent) -> NSEvent? {
-    if isPopupHotKey(event) {
+    if matchesShortcut(.popup, event: event) {
       switchToPopup()
       return nil
     }
 
-    if !isClosed(), isPasteBoardHotKey(event) {
-      if state != .opening {
-        close()
+    if !isClosed(), matchesShortcut(.pasteBoard, event: event) {
+      if isOpening {
+        isOpening = false
+        return nil
       }
+      close()
       return nil
     }
 
-    if isHotKeyCode(Int(event.keyCode)) {
-      if let item = History.shared.pressedShortcutItem {
-        AppState.shared.navigator.select(item: item)
-        Task { @MainActor in
-          AppState.shared.history.select(item)
-        }
-        return nil
-      }
-
-      if state == .opening {
-        state = .cycle
-        // Next 'if' will highlight next item and then return nil
-      }
-
-      if state == .cycle {
-        AppState.shared.navigator.highlightNext(allowCycle: true)
-        return nil
-      }
-
-      if state == .toggle && isHotKeyModifiers(event.modifierFlags) {
-        close()
-        return nil
-      }
-    }
-
     return event
-  }
-
-  private func isPasteBoardHotKey(_ event: NSEvent) -> Bool {
-    return isHotKeyCode(Int(event.keyCode)) && isHotKeyModifiers(event.modifierFlags)
   }
 
   private func switchToPopup() {
@@ -188,51 +190,24 @@ class PasteBoardPopup {
   }
 
   private func handleFlagsChanged(_ event: NSEvent) -> NSEvent? {
-    // If we are in cycle mode, releasing modifiers triggers a selection
-    if state == .cycle && allModifiersReleased(event) {
-      DispatchQueue.main.async {
-        AppState.shared.select()
-      }
-      return nil
-    }
-
-    // Otherwise if in opening mode, enter toggle mode
-    if state == .opening && allModifiersReleased(event) {
-      state = .toggle
-      return event
+    if isOpening, allModifiersReleased(event) {
+      isOpening = false
     }
 
     return event
   }
 
-  private func isPopupHotKey(_ event: NSEvent) -> Bool {
-    guard let shortcut = KeyboardShortcuts.Name.popup.shortcut else {
+  private func allModifiersReleased(_ event: NSEvent) -> Bool {
+    return event.modifierFlags.isDisjoint(with: .deviceIndependentFlagsMask)
+  }
+
+  private func matchesShortcut(_ name: KeyboardShortcuts.Name, event: NSEvent) -> Bool {
+    guard let shortcut = name.shortcut else {
       return false
     }
 
     return shortcut.key?.rawValue == Int(event.keyCode) &&
       event.modifierFlags.intersection(.deviceIndependentFlagsMask) ==
-        shortcut.modifiers.intersection(.deviceIndependentFlagsMask)
-  }
-
-  private func isHotKeyCode(_ keyCode: Int) -> Bool {
-    guard let shortcut = KeyboardShortcuts.Name.pasteBoard.shortcut else {
-      return false
-    }
-
-    return shortcut.key?.rawValue == keyCode
-  }
-
-  private func isHotKeyModifiers(_ modifiers: NSEvent.ModifierFlags) -> Bool {
-    guard let shortcut = KeyboardShortcuts.Name.pasteBoard.shortcut else {
-      return false
-    }
-
-    return modifiers.intersection(.deviceIndependentFlagsMask) ==
-    shortcut.modifiers.intersection(.deviceIndependentFlagsMask)
-  }
-
-  private func allModifiersReleased(_ event: NSEvent) -> Bool {
-    return event.modifierFlags.isDisjoint(with: .deviceIndependentFlagsMask)
+      shortcut.modifiers.intersection(.deviceIndependentFlagsMask)
   }
 }

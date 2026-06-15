@@ -8,7 +8,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var pasteBoardPanel: FloatingPanel<PasteBoardView>!
 
   private let pasteBoardContentRectKey = "pasteBoardContentRect"
-  private let pasteBoardPanelSize = NSSize(width: 360, height: 280)
+  private let pasteBoardPanelWidth: CGFloat = 360
+  private var pasteBoardPanelSize: NSSize {
+    NSSize(width: pasteBoardPanelWidth, height: PasteBoardPopup.minimumHeight)
+  }
+  private var pasteBoardPanelMaxSize: NSSize {
+    NSSize(width: pasteBoardPanelWidth, height: PasteBoardPopup.maximumHeight)
+  }
   private var defaultPasteBoardContentRect: NSRect {
     NSRect(origin: .zero, size: pasteBoardPanelSize)
   }
@@ -17,8 +23,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       return nil
     }
 
-    let contentRect = NSRectFromString(contentRectString)
-    return contentRect.isEmpty ? nil : contentRect
+    var contentRect = NSRectFromString(contentRectString)
+    guard !contentRect.isEmpty else {
+      return nil
+    }
+
+    contentRect.size.width = pasteBoardPanelWidth
+    contentRect.size.height = min(
+      PasteBoardPopup.maximumHeight,
+      max(PasteBoardPopup.minimumHeight, contentRect.height)
+    )
+    return contentRect
   }
 
   @objc
@@ -52,7 +67,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Bridge FloatingPanel via AppDelegate.p
     AppState.shared.appDelegate = self
 
-    Clipboard.shared.onNewCopy { History.shared.add($0) }
+    Clipboard.shared.onNewCopy {
+      let shouldSkipPasteBoardQueue = PasteBoard.shared.consumePendingPasteCopy($0)
+      if !shouldSkipPasteBoardQueue {
+        AppState.shared.pasteBoardPopup.addCopiedItem($0)
+      }
+      History.shared.add($0)
+    }
     Clipboard.shared.start()
 
     Task {
@@ -122,7 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       identifier: "\(Bundle.main.bundleIdentifier ?? "org.p0deje.Maccy").PasteBoard",
       onClose: { AppState.shared.pasteBoardPopup.reset() }
     ) {
-      PasteBoardView(pasteBoard: PasteBoard.shared)
+      PasteBoardView()
     }
     pasteBoardPanel.contentRectForOpen = { [weak self] in
       self?.savedPasteBoardContentRect
@@ -134,7 +155,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     pasteBoardPanel.showsCloseButton = true
     pasteBoardPanel.level = .statusBar
     pasteBoardPanel.minSize = pasteBoardPanelSize
-    pasteBoardPanel.maxSize = pasteBoardPanelSize
+    pasteBoardPanel.maxSize = pasteBoardPanelMaxSize
     Defaults[.windowSize] = windowSize
   }
 
