@@ -14,6 +14,7 @@ extension Defaults.Keys {
   static let clearOnQuit = Key<Bool>("clearOnQuit", default: false)
   static let clearSystemClipboard = Key<Bool>("clearSystemClipboard", default: false)
   static let clipboardCheckInterval = Key<Double>("clipboardCheckInterval", default: 0.5)
+  static let copySound = Key<SoundEffect>("copySound", default: .write)
   static let enabledPasteboardTypes = Key<Set<NSPasteboard.PasteboardType>>(
     "enabledPasteboardTypes", default: Set(StorageType.all.types)
   )
@@ -39,6 +40,7 @@ extension Defaults.Keys {
   static let migrations = Key<[String: Bool]>("migrations", default: [:])
   static let numberOfUsages = Key<Int>("numberOfUsages", default: 0)
   static let pasteByDefault = Key<Bool>("pasteByDefault", default: false)
+  static let pasteSound = Key<SoundEffect>("pasteSound", default: .knock)
   static let pinTo = Key<PinsPosition>("pinTo", default: .top)
   static let popupPosition = Key<PopupPosition>("popupPosition", default: .cursor)
   static let popupScreen = Key<Int>("popupScreen", default: 0)

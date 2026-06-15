@@ -10,6 +10,8 @@ struct GeneralSettingsPane: View {
   )
 
   @Default(.searchMode) private var searchMode
+  @Default(.copySound) private var copySound
+  @Default(.pasteSound) private var pasteSound
 
   @State private var copyModifier = HistoryItemAction.copy.modifierFlags.description
   @State private var pasteModifier = HistoryItemAction.paste.modifierFlags.description
@@ -108,6 +110,28 @@ struct GeneralSettingsPane: View {
         .controlSize(.small)
       }
 
+      Settings.Section(
+        bottomDivider: true,
+        label: {
+          Text(verbatim: generalSettingsString("Sounds", defaultValue: "Sounds:"))
+        }
+      ) {
+        soundPicker(
+          "CopySound",
+          defaultTitle: "Copy",
+          selection: $copySound,
+          help: "CopySoundTooltip",
+          defaultHelp: "Sound to play when copying an item."
+        )
+        soundPicker(
+          "PasteSound",
+          defaultTitle: "Paste",
+          selection: $pasteSound,
+          help: "PasteSoundTooltip",
+          defaultHelp: "Sound to play when pasting an item."
+        )
+      }
+
       Settings.Section(title: "") {
         if let notificationsURL = notificationsURL {
           Link(destination: notificationsURL, label: {
@@ -122,6 +146,41 @@ struct GeneralSettingsPane: View {
     copyModifier = HistoryItemAction.copy.modifierFlags.description
     pasteModifier = HistoryItemAction.paste.modifierFlags.description
     pasteWithoutFormatting = HistoryItemAction.pasteWithoutFormatting.modifierFlags.description
+  }
+
+  private func soundPicker(
+    _ title: String,
+    defaultTitle: String,
+    selection: Binding<SoundEffect>,
+    help: String,
+    defaultHelp: String
+  ) -> some View {
+    HStack {
+      Text(verbatim: generalSettingsString(title, defaultValue: defaultTitle))
+        .frame(width: 50, alignment: .trailing)
+      Picker("", selection: selection) {
+        ForEach(SoundEffect.allCases) { sound in
+          Text(sound.description)
+            .tag(sound)
+        }
+      }
+      .labelsHidden()
+      .frame(width: 180, alignment: .leading)
+      .help(Text(verbatim: generalSettingsString(help, defaultValue: defaultHelp)))
+      .onChange(of: selection.wrappedValue) { _, sound in
+        sound.sound?.play()
+      }
+    }
+  }
+
+  private func generalSettingsString(_ key: String, defaultValue: String) -> String {
+    return NSLocalizedString(
+      key,
+      tableName: "GeneralSettings",
+      bundle: .main,
+      value: defaultValue,
+      comment: ""
+    )
   }
 }
 

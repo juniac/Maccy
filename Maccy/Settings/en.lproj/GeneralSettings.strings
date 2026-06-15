@@ -16,6 +16,11 @@
 "PasteAutomatically" = "Paste automatically";
 "PasteWithoutFormatting" = "Paste without formatting";
 "Modifiers" = "Customize the behavior when selecting item:\n• Select with %@ pressed to copy item.\n• Select with %@ pressed to copy and paste item.\n• Select with %@ pressed to copy, clear formatting, and paste item.";
+"Sounds" = "Sounds:";
+"CopySound" = "Copy";
+"CopySoundTooltip" = "Sound to play when copying an item.";
+"PasteSound" = "Paste";
+"PasteSoundTooltip" = "Sound to play when pasting an item.";
 "Search" = "Search:";
 "Exact" = "Exact";
 "Fuzzy" = "Fuzzy";
