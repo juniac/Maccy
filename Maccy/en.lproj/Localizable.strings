@@ -10,6 +10,10 @@
 "preferences" = "Preferences…";
 "preferences_advanced" = "Advanced";
 "preferences_pins" = "Pins";
+"paste_board_title" = "Paste Board";
+"paste_board_empty" = "Empty";
+"paste_board_close" = "Close";
+"paste_board_image" = "Image";
 "copy_modifiers_config" = "• Select with %@ pressed to copy item.";
 "paste_modifiers_config" = "• Select with %@ pressed to copy and paste item.";
 "format_modifiers_config" = "• Select with %@ pressed to copy, clear formatting and paste item.";

@@ -64,6 +64,14 @@ struct GeneralSettingsPane: View {
 
       Settings.Section(
         bottomDivider: true,
+        label: { Text("PasteBoard", tableName: "GeneralSettings") }
+      ) {
+        KeyboardShortcuts.Recorder(for: .pasteBoard)
+          .help(Text("PasteBoardTooltip", tableName: "GeneralSettings"))
+      }
+
+      Settings.Section(
+        bottomDivider: true,
         label: { Text("Search", tableName: "GeneralSettings") }
       ) {
         Picker("", selection: $searchMode) {

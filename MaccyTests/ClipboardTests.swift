@@ -223,6 +223,78 @@ class ClipboardTests: XCTestCase {
   }
 
   @MainActor
+  func testPrepareForSystemPaste() {
+    var hookCalled = false
+    clipboard.onNewCopy({ (_: HistoryItem) in
+      hookCalled = true
+    })
+    let imageData = image.tiffRepresentation!
+    let contents = [
+      HistoryItemContent(type: stringType.rawValue, value: "foo".data(using: .utf8)!),
+      HistoryItemContent(type: tiffType.rawValue, value: imageData),
+      HistoryItemContent(type: fileURLType.rawValue, value: "file://foo.bar".data(using: .utf8)!)
+    ]
+    let item = HistoryItem()
+    Storage.shared.context.insert(item)
+    item.contents = contents
+    item.application = "com.foo.bar"
+    clipboard.prepareForSystemPaste(item)
+    clipboard.changeCount -= 1
+    clipboard.checkForChangesInPasteboard()
+    XCTAssertEqual(pasteboard.string(forType: .string), "foo")
+    XCTAssertEqual(pasteboard.data(forType: .tiff), imageData)
+    XCTAssertEqual(pasteboard.string(forType: .fileURL), "file://foo.bar")
+    XCTAssertNil(pasteboard.string(forType: .fromMaccy))
+    XCTAssertEqual(pasteboard.string(forType: .fromPasteBoard), "")
+    XCTAssertNil(pasteboard.string(forType: .source))
+    XCTAssertFalse(hookCalled)
+  }
+
+  @MainActor
+  func testPasteBoardEnqueueDoesNotCopy() {
+    let pasteBoard = PasteBoard.shared
+    let history = AppState.shared.history
+    history.clearAll()
+    pasteBoard.isRunning = true
+    pasteBoard.items.removeAll()
+    defer {
+      history.clearAll()
+      pasteBoard.isRunning = false
+      pasteBoard.items.removeAll()
+    }
+
+    pasteboard.clearContents()
+    pasteboard.setString("external", forType: .string)
+    clipboard.changeCount = pasteboard.changeCount
+
+    let item = HistoryItem()
+    Storage.shared.context.insert(item)
+    item.contents = [
+      HistoryItemContent(type: stringType.rawValue, value: "queued".data(using: .utf8)!)
+    ]
+    item.title = "queued"
+    let historyItem = history.add(item)
+
+    let changeCount = pasteboard.changeCount
+    pasteBoard.enqueue(historyItem)
+
+    XCTAssertEqual(pasteBoard.items.count, 1)
+    XCTAssertEqual(pasteboard.changeCount, changeCount)
+    XCTAssertEqual(pasteboard.string(forType: .string), "external")
+
+    XCTAssertTrue(pasteBoard.handlePasteShortcutKeyDown())
+    XCTAssertEqual(pasteboard.string(forType: .string), "queued")
+
+    let consumeExpectation = expectation(description: "First item is consumed")
+    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(180)) {
+      XCTAssertTrue(pasteBoard.items.isEmpty)
+      XCTAssertFalse(history.items.contains(historyItem))
+      consumeExpectation.fulfill()
+    }
+    wait(for: [consumeExpectation], timeout: 1)
+  }
+
+  @MainActor
   func testCopyWithoutFormatting() {
     let contents = [
       HistoryItemContent(type: stringType.rawValue, value: "foo".data(using: .utf8)!),

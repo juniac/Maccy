@@ -12,6 +12,7 @@ class AppState: Sendable {
 
   var appDelegate: AppDelegate?
   var popup: Popup
+  var pasteBoardPopup: PasteBoardPopup
   var history: History
   var footer: Footer
   var navigator: NavigationManager
@@ -39,6 +40,7 @@ class AppState: Sendable {
     self.history = history
     self.footer = footer
     popup = Popup()
+    pasteBoardPopup = PasteBoardPopup()
     navigator = NavigationManager(history: history, footer: footer)
     preview = SlideoutController(
       onContentResize: { contentWidth in

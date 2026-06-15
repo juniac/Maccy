@@ -10,6 +10,8 @@
 "DeleteTooltip" = "Shortcut key to delete history item.\nDefault: ⌥⌫.";
 "ShowPreview" = "Preview:";
 "ShowPreviewTooltip" = "Show preview with additional information.\nDefault: ⌃Space.";
+"PasteBoard" = "Paste Board:";
+"PasteBoardTooltip" = "Global shortcut key to toggle Paste Board.";
 "Behavior" = "Behavior:";
 "PasteAutomatically" = "Paste automatically";
 "PasteWithoutFormatting" = "Paste without formatting";

@@ -13,6 +13,7 @@
 		2F0EC77D2E773314003E2EA9 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC77C2E773314003E2EA9 /* Selection.swift */; };
 		2F0EC77F2E773DBA003E2EA9 /* MultipleSelectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC77E2E773DBA003E2EA9 /* MultipleSelectionListView.swift */; };
 		2F0EC7812E773F1D003E2EA9 /* PasteStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC7802E773F1D003E2EA9 /* PasteStack.swift */; };
+		43D3AB0B2FE0080000E84B1 /* PasteBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3AB0A2FE0080000E84B1 /* PasteBoardView.swift */; };
 		2F0EC7852E774083003E2EA9 /* PasteStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC7842E77407C003E2EA9 /* PasteStackView.swift */; };
 		2F0EC7872E774099003E2EA9 /* PasteStackItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC7862E774093003E2EA9 /* PasteStackItemView.swift */; };
 		2F0EC7892E7743D9003E2EA9 /* HoverSelectionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0EC7882E7743D9003E2EA9 /* HoverSelectionModifier.swift */; };
@@ -33,6 +34,20 @@
 		2FB5BCA02CD8F73F008B33F4 /* ApplicationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB5BC9F2CD8F73C008B33F4 /* ApplicationImage.swift */; };
 		2FF2E94E2E774B5B0093D72C /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2E94D2E774B570093D72C /* NavigationManager.swift */; };
 		2FF2E9502E7808470093D72C /* AppImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2E94F2E7808420093D72C /* AppImageView.swift */; };
+		43D3AAFB2FDFF496000E84B1 /* pentocking.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF52FDFF496000E84B1 /* pentocking.mp3 */; };
+		43D3AAFC2FDFF496000E84B1 /* chapt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAEF2FDFF496000E84B1 /* chapt.mp3 */; };
+		43D3AAFD2FDFF496000E84B1 /* tiket.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF92FDFF496000E84B1 /* tiket.mp3 */; };
+		43D3AAFE2FDFF496000E84B1 /* tirik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAFA2FDFF496000E84B1 /* tirik.mp3 */; };
+		43D3AAFF2FDFF496000E84B1 /* ceramic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAEE2FDFF496000E84B1 /* ceramic.mp3 */; };
+		43D3AB002FDFF496000E84B1 /* foldswitch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF12FDFF496000E84B1 /* foldswitch.mp3 */; };
+		43D3AB012FDFF496000E84B1 /* rifle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF62FDFF496000E84B1 /* rifle.mp3 */; };
+		43D3AB022FDFF496000E84B1 /* dodok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF02FDFF496000E84B1 /* dodok.mp3 */; };
+		43D3AB032FDFF496000E84B1 /* smalltick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF72FDFF496000E84B1 /* smalltick.mp3 */; };
+		43D3AB042FDFF496000E84B1 /* pentick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF42FDFF496000E84B1 /* pentick.mp3 */; };
+		43D3AB052FDFF496000E84B1 /* keyboard.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF22FDFF496000E84B1 /* keyboard.mp3 */; };
+		43D3AB062FDFF496000E84B1 /* keydown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF32FDFF496000E84B1 /* keydown.mp3 */; };
+		43D3AB072FDFF496000E84B1 /* switch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF82FDFF496000E84B1 /* switch.mp3 */; };
+		43D3AB092FDFF679000E84B1 /* PasteBoardPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3AB082FDFF66E000E84B1 /* PasteBoardPopup.swift */; };
 		4762D6972467226100B3A2BA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4762D6992467226100B3A2BA /* Localizable.strings */; };
 		DA009931256411F90030E697 /* appcast.xml in Resources */ = {isa = PBXBuildFile; fileRef = DA00992C256411F90030E697 /* appcast.xml */; };
 		DA009932256411F90030E697 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DA00992D256411F90030E697 /* README.md */; };
@@ -187,6 +202,7 @@
 		2F0EC77C2E773314003E2EA9 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		2F0EC77E2E773DBA003E2EA9 /* MultipleSelectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionListView.swift; sourceTree = "<group>"; };
 		2F0EC7802E773F1D003E2EA9 /* PasteStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteStack.swift; sourceTree = "<group>"; };
+		43D3AB0A2FE0080000E84B1 /* PasteBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardView.swift; sourceTree = "<group>"; };
 		2F0EC7842E77407C003E2EA9 /* PasteStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteStackView.swift; sourceTree = "<group>"; };
 		2F0EC7862E774093003E2EA9 /* PasteStackItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteStackItemView.swift; sourceTree = "<group>"; };
 		2F0EC7882E7743D9003E2EA9 /* HoverSelectionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverSelectionModifier.swift; sourceTree = "<group>"; };
@@ -204,8 +220,21 @@
 		2FB5BC9F2CD8F73C008B33F4 /* ApplicationImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationImage.swift; sourceTree = "<group>"; };
 		2FF2E94D2E774B570093D72C /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		2FF2E94F2E7808420093D72C /* AppImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImageView.swift; sourceTree = "<group>"; };
-		2FFF8BCF2CE2116600235A78 /* Data+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Encoding.swift"; sourceTree = "<group>"; };
 		3EBDD1E32BBEF22800C57500 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43D3AAEE2FDFF496000E84B1 /* ceramic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ceramic.mp3; sourceTree = "<group>"; };
+		43D3AAEF2FDFF496000E84B1 /* chapt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chapt.mp3; sourceTree = "<group>"; };
+		43D3AAF02FDFF496000E84B1 /* dodok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dodok.mp3; sourceTree = "<group>"; };
+		43D3AAF12FDFF496000E84B1 /* foldswitch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = foldswitch.mp3; sourceTree = "<group>"; };
+		43D3AAF22FDFF496000E84B1 /* keyboard.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = keyboard.mp3; sourceTree = "<group>"; };
+		43D3AAF32FDFF496000E84B1 /* keydown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = keydown.mp3; sourceTree = "<group>"; };
+		43D3AAF42FDFF496000E84B1 /* pentick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pentick.mp3; sourceTree = "<group>"; };
+		43D3AAF52FDFF496000E84B1 /* pentocking.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pentocking.mp3; sourceTree = "<group>"; };
+		43D3AAF62FDFF496000E84B1 /* rifle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rifle.mp3; sourceTree = "<group>"; };
+		43D3AAF72FDFF496000E84B1 /* smalltick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = smalltick.mp3; sourceTree = "<group>"; };
+		43D3AAF82FDFF496000E84B1 /* switch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = switch.mp3; sourceTree = "<group>"; };
+		43D3AAF92FDFF496000E84B1 /* tiket.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tiket.mp3; sourceTree = "<group>"; };
+		43D3AAFA2FDFF496000E84B1 /* tirik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tirik.mp3; sourceTree = "<group>"; };
+		43D3AB082FDFF66E000E84B1 /* PasteBoardPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteBoardPopup.swift; sourceTree = "<group>"; };
 		4762D6982467226100B3A2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4762D69A2467226400B3A2BA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4DC4D112252713D700FE5FAC /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -687,6 +716,7 @@
 				DAA072E22C41D1D5006DDFD2 /* ListItemView.swift */,
 				DA5078982CF2676400215488 /* MouseMovedViewModifer.swift */,
 				2F0EC77E2E773DBA003E2EA9 /* MultipleSelectionListView.swift */,
+				43D3AB0A2FE0080000E84B1 /* PasteBoardView.swift */,
 				2F0EC7862E774093003E2EA9 /* PasteStackItemView.swift */,
 				2F162E7F2F1E7B28001FBAFF /* PasteStackPreviewView.swift */,
 				2F0EC7842E77407C003E2EA9 /* PasteStackView.swift */,
@@ -708,6 +738,19 @@
 			children = (
 				DA20FA732B082E0100056DD5 /* Knock.caf */,
 				DA20FA752B082E0800056DD5 /* Write.caf */,
+				43D3AAEE2FDFF496000E84B1 /* ceramic.mp3 */,
+				43D3AAEF2FDFF496000E84B1 /* chapt.mp3 */,
+				43D3AAF02FDFF496000E84B1 /* dodok.mp3 */,
+				43D3AAF12FDFF496000E84B1 /* foldswitch.mp3 */,
+				43D3AAF22FDFF496000E84B1 /* keyboard.mp3 */,
+				43D3AAF32FDFF496000E84B1 /* keydown.mp3 */,
+				43D3AAF42FDFF496000E84B1 /* pentick.mp3 */,
+				43D3AAF52FDFF496000E84B1 /* pentocking.mp3 */,
+				43D3AAF62FDFF496000E84B1 /* rifle.mp3 */,
+				43D3AAF72FDFF496000E84B1 /* smalltick.mp3 */,
+				43D3AAF82FDFF496000E84B1 /* switch.mp3 */,
+				43D3AAF92FDFF496000E84B1 /* tiket.mp3 */,
+				43D3AAFA2FDFF496000E84B1 /* tirik.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -731,6 +774,7 @@
 		DA3BCB902C3EEC1000B01BC1 /* Observables */ = {
 			isa = PBXGroup;
 			children = (
+				43D3AB082FDFF66E000E84B1 /* PasteBoardPopup.swift */,
 				2FF2E94D2E774B570093D72C /* NavigationManager.swift */,
 				DAA072D62C41C574006DDFD2 /* AppState.swift */,
 				DAA072D82C41C5AD006DDFD2 /* Footer.swift */,
@@ -1039,6 +1083,19 @@
 				DA5E62802C39E53F00F4C710 /* PreviewItemView.strings in Resources */,
 				DA009932256411F90030E697 /* README.md in Resources */,
 				DA9C3C4A2C20D4B40056795D /* IgnoreSettings.strings in Resources */,
+				43D3AAFB2FDFF496000E84B1 /* pentocking.mp3 in Resources */,
+				43D3AAFC2FDFF496000E84B1 /* chapt.mp3 in Resources */,
+				43D3AAFD2FDFF496000E84B1 /* tiket.mp3 in Resources */,
+				43D3AAFE2FDFF496000E84B1 /* tirik.mp3 in Resources */,
+				43D3AAFF2FDFF496000E84B1 /* ceramic.mp3 in Resources */,
+				43D3AB002FDFF496000E84B1 /* foldswitch.mp3 in Resources */,
+				43D3AB012FDFF496000E84B1 /* rifle.mp3 in Resources */,
+				43D3AB022FDFF496000E84B1 /* dodok.mp3 in Resources */,
+				43D3AB032FDFF496000E84B1 /* smalltick.mp3 in Resources */,
+				43D3AB042FDFF496000E84B1 /* pentick.mp3 in Resources */,
+				43D3AB052FDFF496000E84B1 /* keyboard.mp3 in Resources */,
+				43D3AB062FDFF496000E84B1 /* keydown.mp3 in Resources */,
+				43D3AB072FDFF496000E84B1 /* switch.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,6 +1145,7 @@
 				DA5078992CF2676B00215488 /* MouseMovedViewModifer.swift in Sources */,
 				DA19690E2C3EEFA900258481 /* KeyboardShortcutView.swift in Sources */,
 				DA243D122C2F64830012A27F /* ContentView.swift in Sources */,
+				43D3AB0B2FE0080000E84B1 /* PasteBoardView.swift in Sources */,
 				DAD665662898A1C000975096 /* KeyChord.swift in Sources */,
 				DA689FC42C1CF0F00009B887 /* AppearanceSettingsPane.swift in Sources */,
 				2F1091D72F2B6E8400F5C454 /* AsyncView.swift in Sources */,
@@ -1114,6 +1172,7 @@
 				DAA5ACCA2C1BEE8A00B58513 /* SoftwareUpdater.swift in Sources */,
 				2F9B42F12F1A499D006548E5 /* ToolbarView.swift in Sources */,
 				DAA5ACB22C1B3F8800B58513 /* GeneralSettingsPane.swift in Sources */,
+				43D3AB092FDFF679000E84B1 /* PasteBoardPopup.swift in Sources */,
 				DA1969122C3F0DD200258481 /* HistoryItemView.swift in Sources */,
 				DA0EF1881E444B2A00E58577 /* Clipboard.swift in Sources */,
 				DA3F1B452C90084600267632 /* Sauce+KeyboardShortcuts.swift in Sources */,
@@ -1736,7 +1795,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 60;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = MN3X4648SC;
+				DEVELOPMENT_TEAM = 64TZT848NJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1771,7 +1830,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 60;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = MN3X4648SC;
+				DEVELOPMENT_TEAM = 64TZT848NJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

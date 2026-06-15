@@ -5,6 +5,14 @@ import SwiftUI
 // https://stackoverflow.com/questions/46023769/how-to-show-a-window-without-stealing-focus-on-macos
 class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   var isPresented: Bool = false
+  var closesOnResignKey = true
+  var showsCloseButton = false {
+    didSet {
+      updateStandardWindowButtons()
+    }
+  }
+  var contentRectForOpen: (() -> NSRect?)?
+  var onContentRectChange: ((NSRect) -> Void)?
   var statusBarButton: NSStatusBarButton?
   let onClose: () -> Void
 
@@ -24,7 +32,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
 
     super.init(
         contentRect: contentRect,
-        styleMask: [.nonactivatingPanel, .resizable, .closable, .fullSizeContentView],
+        styleMask: [.nonactivatingPanel, .titled, .resizable, .closable, .fullSizeContentView],
         backing: .buffered,
         defer: false
     )
@@ -46,10 +54,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     backgroundColor = .clear
     titlebarSeparatorStyle = .none
 
-    // Hide all traffic light buttons
-    standardWindowButton(.closeButton)?.isHidden = true
-    standardWindowButton(.miniaturizeButton)?.isHidden = true
-    standardWindowButton(.zoomButton)?.isHidden = true
+    updateStandardWindowButtons()
 
     contentView = NSHostingView(
       rootView: view()
@@ -63,6 +68,25 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
     contentView?.layer?.cornerRadius = Popup.cornerRadius + Popup.horizontalPadding
   }
 
+  private func updateStandardWindowButtons() {
+    standardWindowButton(.closeButton)?.isHidden = !showsCloseButton
+    standardWindowButton(.miniaturizeButton)?.isHidden = true
+    standardWindowButton(.zoomButton)?.isHidden = true
+  }
+
+  private func restoreContentRect() -> Bool {
+    guard let contentRect = contentRectForOpen?(), !contentRect.isEmpty else {
+      return false
+    }
+
+    setFrame(frameRect(forContentRect: contentRect), display: false)
+    return true
+  }
+
+  private func persistContentRect() {
+    onContentRectChange?(contentRect(forFrameRect: frame))
+  }
+
   func toggle(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
     if isPresented {
       close()
@@ -72,12 +96,15 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   func open(height: CGFloat, at popupPosition: PopupPosition = Defaults[.popupPosition]) {
-    let size = Defaults[.windowSize]
-    setContentSize(NSSize(width: min(frame.width, size.width), height: min(height, size.height)))
-    setFrameOrigin(popupPosition.origin(size: frame.size, statusBarButton: statusBarButton))
+    if !restoreContentRect() {
+      let size = Defaults[.windowSize]
+      setContentSize(NSSize(width: min(frame.width, size.width), height: min(height, size.height)))
+      setFrameOrigin(popupPosition.origin(size: frame.size, statusBarButton: statusBarButton))
+    }
     orderFrontRegardless()
     makeKey()
     isPresented = true
+    persistContentRect()
 
     if popupPosition == .statusItem {
       DispatchQueue.main.async {
@@ -166,6 +193,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
 
   func windowDidMove(_ notification: Notification) {
     determinePreviewPlacement()
+    persistContentRect()
   }
 
   func windowWillStartLiveResize(_ notification: Notification) {
@@ -175,6 +203,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   func windowDidEndLiveResize(_ notification: Notification) {
     AppState.shared.preview.startAutoOpen()
     AppState.shared.preview.endResize()
+    persistContentRect()
   }
 
   func windowDidBecomeKey(_ notification: Notification) {
@@ -192,6 +221,8 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   // Close automatically when out of focus, e.g. outside click.
   override func resignKey() {
     super.resignKey()
+    guard closesOnResignKey else { return }
+
     // Don't hide if confirmation is shown.
     if NSApp.alertWindow == nil {
       close()
@@ -199,6 +230,7 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
   }
 
   override func close() {
+    persistContentRect()
     super.close()
     AppState.shared.preview.state = .closed
     isPresented = false

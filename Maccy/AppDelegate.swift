@@ -5,6 +5,21 @@ import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
   var panel: FloatingPanel<ContentView>!
+  var pasteBoardPanel: FloatingPanel<PasteBoardView>!
+
+  private let pasteBoardContentRectKey = "pasteBoardContentRect"
+  private let pasteBoardPanelSize = NSSize(width: 360, height: 280)
+  private var defaultPasteBoardContentRect: NSRect {
+    NSRect(origin: .zero, size: pasteBoardPanelSize)
+  }
+  private var savedPasteBoardContentRect: NSRect? {
+    guard let contentRectString = UserDefaults.standard.string(forKey: pasteBoardContentRectKey) else {
+      return nil
+    }
+
+    let contentRect = NSRectFromString(contentRectString)
+    return contentRect.isEmpty ? nil : contentRect
+  }
 
   @objc
   private lazy var statusItem: NSStatusItem = {
@@ -34,7 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     #endif
 
-    // Bridge FloatingPanel via AppDelegate.
+    // Bridge FloatingPanel via AppDelegate.p
     AppState.shared.appDelegate = self
 
     Clipboard.shared.onNewCopy { History.shared.add($0) }
@@ -100,6 +115,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     ) {
       ContentView()
     }
+
+    let windowSize = Defaults[.windowSize]
+    pasteBoardPanel = FloatingPanel(
+      contentRect: savedPasteBoardContentRect ?? defaultPasteBoardContentRect,
+      identifier: "\(Bundle.main.bundleIdentifier ?? "org.p0deje.Maccy").PasteBoard",
+      onClose: { AppState.shared.pasteBoardPopup.reset() }
+    ) {
+      PasteBoardView(pasteBoard: PasteBoard.shared)
+    }
+    pasteBoardPanel.contentRectForOpen = { [weak self] in
+      self?.savedPasteBoardContentRect
+    }
+    pasteBoardPanel.onContentRectChange = { [weak self] contentRect in
+      self?.savePasteBoardContentRect(contentRect)
+    }
+    pasteBoardPanel.closesOnResignKey = false
+    pasteBoardPanel.showsCloseButton = true
+    pasteBoardPanel.level = .statusBar
+    pasteBoardPanel.minSize = pasteBoardPanelSize
+    pasteBoardPanel.maxSize = pasteBoardPanelSize
+    Defaults[.windowSize] = windowSize
+  }
+
+  private func savePasteBoardContentRect(_ contentRect: NSRect) {
+    UserDefaults.standard.set(NSStringFromRect(contentRect), forKey: pasteBoardContentRectKey)
   }
 
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
