@@ -163,7 +163,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
       }
     } else {
       Task {
-        Notifier.notify(body: item.title, sound: .write)
+        Notifier.notify(body: item.title, sound: Defaults[.copySound].sound)
       }
     }
 
