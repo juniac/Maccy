@@ -33,6 +33,16 @@
 		2FB5BCA02CD8F73F008B33F4 /* ApplicationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB5BC9F2CD8F73C008B33F4 /* ApplicationImage.swift */; };
 		2FF2E94E2E774B5B0093D72C /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2E94D2E774B570093D72C /* NavigationManager.swift */; };
 		2FF2E9502E7808470093D72C /* AppImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2E94F2E7808420093D72C /* AppImageView.swift */; };
+		4393CC1B2FF3AA5600B08094 /* pens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC152FF3AA5600B08094 /* pens.mp3 */; };
+		4393CC1C2FF3AA5600B08094 /* zorik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC192FF3AA5600B08094 /* zorik.mp3 */; };
+		4393CC1D2FF3AA5600B08094 /* dso.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC142FF3AA5600B08094 /* dso.mp3 */; };
+		4393CC1E2FF3AA5600B08094 /* sorok.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC162FF3AA5600B08094 /* sorok.mp3 */; };
+		4393CC1F2FF3AA5600B08094 /* zzop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC1A2FF3AA5600B08094 /* zzop.mp3 */; };
+		4393CC202FF3AA5600B08094 /* bbopt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC122FF3AA5600B08094 /* bbopt.mp3 */; };
+		4393CC212FF3AA5600B08094 /* bbisoka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC112FF3AA5600B08094 /* bbisoka.mp3 */; };
+		4393CC222FF3AA5600B08094 /* stapler.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC172FF3AA5600B08094 /* stapler.mp3 */; };
+		4393CC232FF3AA5600B08094 /* tigidik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC182FF3AA5600B08094 /* tigidik.mp3 */; };
+		4393CC242FF3AA5600B08094 /* ddddrik.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4393CC132FF3AA5600B08094 /* ddddrik.mp3 */; };
 		43D3AAFB2FDFF496000E84B1 /* pentocking.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF52FDFF496000E84B1 /* pentocking.mp3 */; };
 		43D3AAFC2FDFF496000E84B1 /* chapt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAEF2FDFF496000E84B1 /* chapt.mp3 */; };
 		43D3AAFD2FDFF496000E84B1 /* tiket.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43D3AAF92FDFF496000E84B1 /* tiket.mp3 */; };
@@ -221,6 +231,16 @@
 		2FF2E94D2E774B570093D72C /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		2FF2E94F2E7808420093D72C /* AppImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImageView.swift; sourceTree = "<group>"; };
 		3EBDD1E32BBEF22800C57500 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4393CC112FF3AA5600B08094 /* bbisoka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bbisoka.mp3; sourceTree = "<group>"; };
+		4393CC122FF3AA5600B08094 /* bbopt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bbopt.mp3; sourceTree = "<group>"; };
+		4393CC132FF3AA5600B08094 /* ddddrik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ddddrik.mp3; sourceTree = "<group>"; };
+		4393CC142FF3AA5600B08094 /* dso.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dso.mp3; sourceTree = "<group>"; };
+		4393CC152FF3AA5600B08094 /* pens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pens.mp3; sourceTree = "<group>"; };
+		4393CC162FF3AA5600B08094 /* sorok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sorok.mp3; sourceTree = "<group>"; };
+		4393CC172FF3AA5600B08094 /* stapler.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = stapler.mp3; sourceTree = "<group>"; };
+		4393CC182FF3AA5600B08094 /* tigidik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tigidik.mp3; sourceTree = "<group>"; };
+		4393CC192FF3AA5600B08094 /* zorik.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = zorik.mp3; sourceTree = "<group>"; };
+		4393CC1A2FF3AA5600B08094 /* zzop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = zzop.mp3; sourceTree = "<group>"; };
 		43D3AAEE2FDFF496000E84B1 /* ceramic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ceramic.mp3; sourceTree = "<group>"; };
 		43D3AAEF2FDFF496000E84B1 /* chapt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chapt.mp3; sourceTree = "<group>"; };
 		43D3AAF02FDFF496000E84B1 /* dodok.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dodok.mp3; sourceTree = "<group>"; };
@@ -738,6 +758,16 @@
 		DA21AD3C249E85BD003E7C98 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				4393CC112FF3AA5600B08094 /* bbisoka.mp3 */,
+				4393CC122FF3AA5600B08094 /* bbopt.mp3 */,
+				4393CC132FF3AA5600B08094 /* ddddrik.mp3 */,
+				4393CC142FF3AA5600B08094 /* dso.mp3 */,
+				4393CC152FF3AA5600B08094 /* pens.mp3 */,
+				4393CC162FF3AA5600B08094 /* sorok.mp3 */,
+				4393CC172FF3AA5600B08094 /* stapler.mp3 */,
+				4393CC182FF3AA5600B08094 /* tigidik.mp3 */,
+				4393CC192FF3AA5600B08094 /* zorik.mp3 */,
+				4393CC1A2FF3AA5600B08094 /* zzop.mp3 */,
 				DA20FA732B082E0100056DD5 /* Knock.caf */,
 				DA20FA752B082E0800056DD5 /* Write.caf */,
 				43D3AAEE2FDFF496000E84B1 /* ceramic.mp3 */,
@@ -1074,6 +1104,16 @@
 			files = (
 				DA20FA762B082E0800056DD5 /* Write.caf in Resources */,
 				DA6373981E4AB9BB00263391 /* Assets.xcassets in Resources */,
+				4393CC1B2FF3AA5600B08094 /* pens.mp3 in Resources */,
+				4393CC1C2FF3AA5600B08094 /* zorik.mp3 in Resources */,
+				4393CC1D2FF3AA5600B08094 /* dso.mp3 in Resources */,
+				4393CC1E2FF3AA5600B08094 /* sorok.mp3 in Resources */,
+				4393CC1F2FF3AA5600B08094 /* zzop.mp3 in Resources */,
+				4393CC202FF3AA5600B08094 /* bbopt.mp3 in Resources */,
+				4393CC212FF3AA5600B08094 /* bbisoka.mp3 in Resources */,
+				4393CC222FF3AA5600B08094 /* stapler.mp3 in Resources */,
+				4393CC232FF3AA5600B08094 /* tigidik.mp3 in Resources */,
+				4393CC242FF3AA5600B08094 /* ddddrik.mp3 in Resources */,
 				DAA365D12C4C147400A394F8 /* PinsSettings.strings in Resources */,
 				DA689FCF2C1DEE570009B887 /* AppearanceSettings.strings in Resources */,
 				4762D6972467226100B3A2BA /* Localizable.strings in Resources */,
