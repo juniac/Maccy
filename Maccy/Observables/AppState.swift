@@ -54,13 +54,13 @@ class AppState: Sendable {
   }
 
   @MainActor
-  func select() {
+  func select(flags modifierFlags: NSEvent.ModifierFlags) {
     if !navigator.selection.isEmpty {
       if navigator.isMultiSelectInProgress {
         navigator.isManualMultiSelect = false
-        history.startPasteStack(selection: &navigator.selection)
+        history.startPasteStack(selection: &navigator.selection, flags: modifierFlags)
       } else {
-        history.select(navigator.selection.first)
+        history.select(navigator.selection.first, flags: modifierFlags)
       }
     } else if let item = footer.selectedItem {
       // TODO: Use item.suppressConfirmation, but it's not updated!
@@ -70,7 +70,7 @@ class AppState: Sendable {
         item.action()
       }
     } else {
-      Clipboard.shared.copy(history.searchQuery)
+      Clipboard.shared.copyInMaccy(history.searchQuery)
       history.searchQuery = ""
     }
   }

@@ -29,7 +29,13 @@ struct HistoryItemView: View {
     }
   }
 
+  @Default(.showHexColorSwatch) private var showHexColorSwatch
   @Environment(AppState.self) private var appState
+
+  private var colorSwatchImage: NSImage? {
+    guard showHexColorSwatch else { return nil }
+    return ColorImage.from(item.title)
+  }
 
   var body: some View {
     ListItemView(
@@ -37,7 +43,7 @@ struct HistoryItemView: View {
       selectionId: item.id,
       appIcon: item.applicationImage,
       image: item.thumbnailImage,
-      accessoryImage: item.thumbnailImage != nil ? nil : ColorImage.from(item.title),
+      accessoryImage: item.thumbnailImage != nil ? nil : colorSwatchImage,
       attributedTitle: item.attributedTitle,
       shortcuts: item.shortcuts,
       isSelected: item.isSelected,
@@ -53,8 +59,9 @@ struct HistoryItemView: View {
       if NSEvent.modifierFlags.contains(.command) && appState.multiSelectionEnabled {
         appState.navigator.addToSelection(item: item)
       } else {
+        let flags = NSEvent.ModifierFlags.currentModifierFlags
         Task {
-          appState.history.select(item)
+          appState.history.select(item, flags: flags)
         }
       }
     }

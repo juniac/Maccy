@@ -134,7 +134,7 @@ class PasteBoard {
       guard !Task.isCancelled else { return }
 
       prepareToPasteQueuedItem(item)
-      AppState.shared.history.select(item)
+      AppState.shared.history.select(item, flags: .currentModifierFlags)
       AppState.shared.pasteBoardPopup.removeQueuedItem(item)
     }
   }
