@@ -3,6 +3,18 @@ import UserNotifications
 
 class Notifier {
   private static var center: UNUserNotificationCenter { UNUserNotificationCenter.current() }
+  private static var lastSound: NSSound?
+
+  // NSSound ignores play() while already playing, so rapid copy/paste
+  // silently drops sounds. Keep a single playback: stop the previous
+  // sound and restart the current one.
+  private static func playSound(_ sound: NSSound?) {
+    DispatchQueue.main.async {
+      lastSound?.stop()
+      lastSound = sound
+      sound?.play()
+    }
+  }
 
   static func authorize() {
     center.requestAuthorization(options: [.alert, .sound]) { _, error in
@@ -32,7 +44,7 @@ class Notifier {
           NSLog("Failed to deliver notification: \(String(describing: error))")
         } else {
           if settings.soundSetting == .enabled {
-            sound?.play()
+            playSound(sound)
           }
         }
       }
