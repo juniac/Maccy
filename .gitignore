@@ -4,3 +4,5 @@ Maccy.xcodeproj/project.xcworkspace/xcshareddata
 .DS_Store
 Maccy/.DS_Store
 .github
+
+build/
