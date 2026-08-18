@@ -1,4 +1,5 @@
 import AppKit
+import Defaults
 import KeyboardShortcuts
 import Observation
 
@@ -134,7 +135,10 @@ class PasteBoard {
       guard !Task.isCancelled else { return }
 
       prepareToPasteQueuedItem(item)
-      AppState.shared.history.select(item, flags: .currentModifierFlags)
+      // Paste explicitly: ⌘ is still held here, so select(_:flags:) would map
+      // the action to copy-only and the first ⌘V would never paste.
+      Clipboard.shared.copy(item.item, removeFormatting: Defaults[.removeFormattingByDefault])
+      Clipboard.shared.paste()
       AppState.shared.pasteBoardPopup.removeQueuedItem(item)
     }
   }
