@@ -43,7 +43,7 @@ class Popup {
   var extraTopHeight: CGFloat = 0
   var extraBottomHeight: CGFloat = 0
   var footerHeight: CGFloat = 0
-  
+
   var minimumHeight: CGFloat {
     // Reserve space for 3 items
     return suitableHeight(for: 3 * Popup.itemHeight)
@@ -100,7 +100,7 @@ class Popup {
     var minHeight = self.minimumHeight
     // If the preview is non-empty make sure the window accomodates for it to be visible.
     if AppState.shared.preview.state.isOpen && AppState.shared.navigator.leadSelection != nil {
-      minHeight += Self.minimumPreviewHeight
+      minHeight = max(minHeight, Self.minimumPreviewHeight)
     }
     minHeight = max(headerHeight + Self.verticalPadding, minHeight)
 
@@ -108,7 +108,7 @@ class Popup {
     height = min(height, Defaults[.windowSize].height)
     return height
   }
-  
+
   private func suitableHeight(for historyListHeight: CGFloat) -> CGFloat {
     return historyListHeight + headerHeight + extraTopHeight + extraBottomHeight + footerHeight
   }

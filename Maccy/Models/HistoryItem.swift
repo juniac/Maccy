@@ -101,7 +101,9 @@ class HistoryItem {
     }
 
     // 1k characters is trade-off for performance
-    var title = previewableText.shortened(to: 1_000)
+    var title = previewableText
+      .shortened(to: 1_000)
+      .removingScalarsUnsafeForTitleLayout()
 
     if Defaults[.showSpecialSymbols] {
       if let range = title.range(of: "^ +", options: .regularExpression) {
@@ -184,7 +186,7 @@ class HistoryItem {
 
     return NSAttributedString(rtf: data, documentAttributes: nil)
   }
-  
+
   func clearDecodedImageCache() {
     cachedDecodedImage?.recache()
     cachedDecodedImage = nil
